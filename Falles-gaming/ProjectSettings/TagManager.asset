@@ -41,6 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Arboles
+    uniqueID: 3839608095
+    locked: 0
+  - name: WindParticle1
+    uniqueID: 1829597561
+    locked: 0
+  - name: WindParticle2
+    uniqueID: 3552608397
+    locked: 0
   - name: LlamaApagada
     uniqueID: 3652777333
     locked: 0
