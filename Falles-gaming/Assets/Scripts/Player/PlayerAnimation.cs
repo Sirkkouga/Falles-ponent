@@ -22,10 +22,6 @@ public class PlayerSpriteAnimator : MonoBehaviour
     private int walkFrameIndex = 0;
     private int runFrameIndex = 0;
 
-
-    public AudioSource audioSource;
-    public AudioClip tolon_tolon;
-
     void Start()
     {
         rend = GetComponent<Renderer>();
@@ -46,10 +42,6 @@ public class PlayerSpriteAnimator : MonoBehaviour
             timer = 0f;
             walkFrameIndex = 0;
             runFrameIndex = 0;
-
-            // Stop audio if playing
-            if (audioSource.isPlaying)
-                audioSource.Stop();
         }
         else
         {
@@ -87,12 +79,6 @@ public class PlayerSpriteAnimator : MonoBehaviour
                         case 2: rend.material.SetTexture("_MainTex", camina2); break;
                         case 3: rend.material.SetTexture("_MainTex", parado); break;
                     }
-                }
-                // Play audio if not already playing
-                if (!audioSource.isPlaying)
-                {
-                    audioSource.clip = tolon_tolon;
-                    audioSource.Play();
                 }
             }
         }
