@@ -130,6 +130,9 @@ public class PlayerSpriteAnimator : MonoBehaviour
         // --- Crouch ---
         if (isCtrlHeld)
         {
+            if (audioSource.isPlaying)
+                audioSource.Stop();
+
             rend.material.SetTexture("_MainTex", agachado);
             timer = 0f;
             walkFrameIndex = 0;

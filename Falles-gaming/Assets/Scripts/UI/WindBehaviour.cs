@@ -31,6 +31,10 @@ public class WindBehaviour : MonoBehaviour
     private bool windActive = false;
     private bool burnEffectActive = false;
 
+    // Sounds effect
+    public AudioClip WindSound;
+    public AudioSource audioSource;
+
     void Start()
     {
         ScheduleNextWind();
@@ -61,6 +65,10 @@ public class WindBehaviour : MonoBehaviour
             if (!burnEffectActive && eventTimer >= burnEffectDelay)
             {
                 burnEffectActive = true;
+                
+                audioSource.clip = WindSound;
+                audioSource.Play();
+
                 if (flameUI != null)
                     flameUI.externalBurnMultiplier = windBurnMultiplier;
             }
@@ -100,6 +108,10 @@ public class WindBehaviour : MonoBehaviour
     {
         windActive = false;
         burnEffectActive = false;
+
+        if (audioSource.isPlaying)
+            audioSource.Stop();
+
         ScheduleNextWind();
 
         if (flameUI != null)
