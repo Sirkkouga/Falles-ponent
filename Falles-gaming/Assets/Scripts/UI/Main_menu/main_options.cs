@@ -6,7 +6,7 @@ public class MenuPrincipal : MonoBehaviour
     public void Jugar()
     {
         Debug.Log("Iniciando el juego...");
-        SceneManager.LoadScene("Juego"); // Nombre de tu escena de juego
+        SceneManager.LoadScene("SampleScene"); // Nombre de tu escena de juego
     }
 
     public void Salir()
