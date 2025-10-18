@@ -5,6 +5,7 @@ public class PlayerSpriteAnimator : MonoBehaviour
     [Header("Idle / Walk Sprites")]
     public Texture parado;      // Idle texture
     public Texture camina1;     // Walk frame 1
+    
     public Texture camina2;     // Walk frame 2
 
     [Header("Run Sprites")]
@@ -58,9 +59,9 @@ public class PlayerSpriteAnimator : MonoBehaviour
                     switch (runFrameIndex)
                     {
                         case 0: rend.material.SetTexture("_MainTex", correr1); break;
-                        case 1: rend.material.SetTexture("_MainTex", correr2); break;
-                        case 2: rend.material.SetTexture("_MainTex", correr3); break;
-                        case 3: rend.material.SetTexture("_MainTex", correr4); break;
+                        case 1: rend.material.SetTexture("_MainTex", correr4); break;
+                        case 2: rend.material.SetTexture("_MainTex", correr2); break;
+                        case 3: rend.material.SetTexture("_MainTex", correr3); break;
                     }
                 }
             }
@@ -70,8 +71,14 @@ public class PlayerSpriteAnimator : MonoBehaviour
                 if (timer >= walkAnimationSpeed)
                 {
                     timer = 0f;
-                    walkFrameIndex = (walkFrameIndex + 1) % 2; // 2 walking frames
-                    rend.material.SetTexture("_MainTex", walkFrameIndex == 0 ? camina1 : camina2);
+                    walkFrameIndex = (walkFrameIndex + 1) % 4; // 4 walking frames
+                    switch (walkFrameIndex)
+                    {
+                        case 0: rend.material.SetTexture("_MainTex", camina1); break;
+                        case 1: rend.material.SetTexture("_MainTex", parado); break;
+                        case 2: rend.material.SetTexture("_MainTex", camina2); break;
+                        case 3: rend.material.SetTexture("_MainTex", parado); break;
+                    }
                 }
             }
         }
