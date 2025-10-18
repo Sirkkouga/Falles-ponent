@@ -19,15 +19,19 @@ public class TextureScroller : MonoBehaviour
 
         // Check if Left Shift or Right Shift is held
         bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        bool isCtrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 
         // Calculate speed (boosted if shift is held)
         float currentSpeed = scrollSpeed * (isShiftHeld ? boostMultiplier : 1f);
 
-        // Shift texture along V coordinate (offset.y)
-        offset.x += horizontalInput * currentSpeed * Time.deltaTime;
-
-        // Apply to URP material
-        rend.material.SetTextureOffset("_BaseMap", offset);
+        // Only shift texture when Ctrl is NOT pressed
+        if (!isCtrlHeld)
+        {
+            // Shift texture along X coordinate (offset.x)
+            offset.x += horizontalInput * currentSpeed * Time.deltaTime;
+            // Apply to URP material
+            rend.material.SetTextureOffset("_BaseMap", offset);
+        }
     }
 }
 
