@@ -24,6 +24,13 @@ public class FlameUI : MonoBehaviour
 
     private float burnProgress = 0f;        // 0 = full, 1 = empty
 
+    //--- Sound effects ---
+    public AudioClip Flama;
+    public AudioClip Rekind;
+    public AudioSource audioSource;
+
+    private float rekindAudio = 0f;
+
     void Start()
     {
         if (flameImage != null)
@@ -34,10 +41,23 @@ public class FlameUI : MonoBehaviour
 
         if (flamePrefab != null)
             flamePrefab.localScale = Vector3.one * maxPrefabScale;
+        
+        audioSource.clip = Flama;
+        audioSource.Play();
     }
 
     void Update()
     {
+        if (rekindAudio > 0f)
+        {
+            rekindAudio -= Time.deltaTime;
+            if (rekindAudio <= 0f)
+            {
+                audioSource.clip = Flama;
+                audioSource.Play();
+            }
+        }
+
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         bool isMoving = horizontalInput != 0;
         bool isRunning = isMoving && Input.GetKey(KeyCode.LeftShift);
@@ -53,6 +73,8 @@ public class FlameUI : MonoBehaviour
         // --- Update burn progress ---
         burnProgress += burnRate * Time.deltaTime;
         burnProgress = Mathf.Clamp01(burnProgress);
+
+        audioSource.volume = 1f - burnProgress;
 
         // --- Update UI flame ---
         if (flameImage != null)
@@ -81,6 +103,11 @@ public class FlameUI : MonoBehaviour
     public void ResetFlame()
     {
         burnProgress = 0f;
+        audioSource.clip = Rekind;
+        audioSource.Play();
+
+        rekindAudio = audioSource.clip.length;
+
 
         if (flameImage != null)
             flameImage.fillAmount = 1f;
