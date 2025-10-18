@@ -511,11 +511,14 @@ MonoBehaviour:
   windV2Prefab: {fileID: 6735749837953967718, guid: 3cf567b924c753840aa3be35abfb7657, type: 3}
   particlesPerSpawn: 12
   spawnInterval: 2
-  minInterval: 20
+  minInterval: 10
   maxInterval: 30
-  windDuration: 10
+  windDuration: 12
   horizontalSpread: 20
   verticalSpread: 20
+  flameUI: {fileID: 884434444}
+  windBurnMultiplier: 5
+  burnEffectDelay: 7
 --- !u!4 &643533566
 Transform:
   m_ObjectHideFlags: 0
@@ -708,9 +711,10 @@ MonoBehaviour:
   flamePrefab: {fileID: 817491913}
   maxPrefabScale: 0.5
   minPrefabScale: 0
-  baseBurnTime: 40
-  walkMultiplier: 1.5
+  baseBurnTime: 60
+  walkMultiplier: 1.2
   runMultiplier: 3
+  externalBurnMultiplier: 1
 --- !u!1 &983665057
 GameObject:
   m_ObjectHideFlags: 0

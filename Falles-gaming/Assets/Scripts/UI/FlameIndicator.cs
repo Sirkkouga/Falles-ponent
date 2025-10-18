@@ -20,6 +20,7 @@ public class FlameUI : MonoBehaviour
     public float baseBurnTime = 10f;        // Full burn when idle
     public float walkMultiplier = 1.5f;     // Burns faster when walking
     public float runMultiplier = 3f;        // Burns fastest when running
+    public float externalBurnMultiplier = 1f; // Multiplied externally by wind, etc.
 
     private float burnProgress = 0f;        // 0 = full, 1 = empty
 
@@ -42,7 +43,7 @@ public class FlameUI : MonoBehaviour
         bool isRunning = isMoving && Input.GetKey(KeyCode.LeftShift);
 
         // --- Calculate burn rate per second ---
-        float burnRate = 1f / baseBurnTime; // base rate
+        float burnRate = (1f / baseBurnTime) * externalBurnMultiplier; // base rate
 
         if (isRunning)
             burnRate *= runMultiplier;
