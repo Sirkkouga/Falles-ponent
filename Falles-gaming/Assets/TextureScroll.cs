@@ -24,7 +24,7 @@ public class TextureScroller : MonoBehaviour
         float currentSpeed = scrollSpeed * (isShiftHeld ? boostMultiplier : 1f);
 
         // Shift texture along V coordinate (offset.y)
-        offset.y -= horizontalInput * currentSpeed * Time.deltaTime;
+        offset.x += horizontalInput * currentSpeed * Time.deltaTime;
 
         // Apply to URP material
         rend.material.SetTextureOffset("_BaseMap", offset);
