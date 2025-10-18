@@ -750,6 +750,9 @@ MonoBehaviour:
   walkMultiplier: 1.2
   runMultiplier: 3
   externalBurnMultiplier: 1
+  Flama: {fileID: 8300000, guid: e2d70e36c45e3454da7bc1e26c1bd90b, type: 3}
+  Rekind: {fileID: 8300000, guid: 48f8479201ef80341a9c3ea91f9d8deb, type: 3}
+  audioSource: {fileID: 1019851124}
 --- !u!1 &983665057
 GameObject:
   m_ObjectHideFlags: 0
