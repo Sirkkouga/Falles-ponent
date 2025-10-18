@@ -205,12 +205,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.2, y: 0.3, z: -3}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.8000002, y: 3.8, z: -12}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1139126645}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
@@ -1145,7 +1145,6 @@ Transform:
   m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 629540003}
   m_Father: {fileID: 0}
@@ -1170,8 +1169,15 @@ MonoBehaviour:
   correr2: {fileID: 2800000, guid: 04f4cae2ac4af1e42a41b39847ed606c, type: 3}
   correr3: {fileID: 2800000, guid: acaae2a323ab1834d94c1826b8ea6318, type: 3}
   correr4: {fileID: 2800000, guid: 1a8f34daac6122b45b0a5229446f84b9, type: 3}
+  saltar1: {fileID: 2800000, guid: 93e33e150d443df42bd076c6a306778f, type: 3}
+  saltar2: {fileID: 2800000, guid: f67e736fbd751094a9f50852f1f039b7, type: 3}
+  saltar3: {fileID: 2800000, guid: 44f1fb15fdc382a48ad0320144bfa8e3, type: 3}
+  saltar4: {fileID: 2800000, guid: 93e33e150d443df42bd076c6a306778f, type: 3}
   walkAnimationSpeed: 0.2
   runAnimationSpeed: 0.1
+  jumpAnimationSpeed: 0.1
+  smallJumpOffset: 2
+  bigJumpOffset: 4
 --- !u!1 &1299949432
 GameObject:
   m_ObjectHideFlags: 0
@@ -1872,6 +1878,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 832575519}
   - {fileID: 983665061}
+  - {fileID: 330585546}
   - {fileID: 1139126645}
   - {fileID: 2112565147}
   - {fileID: 1091211836}
