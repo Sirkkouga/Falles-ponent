@@ -43,6 +43,14 @@ public class PlayerSpriteAnimator : MonoBehaviour
     // Remember base local position for Y offset reset
     private Vector3 basePosition;
 
+
+    // Sounds effect
+
+    public AudioClip Bell;
+    public AudioClip Fast_bell;
+    public AudioSource audioSource;
+    public AudioSource audioSource2;
+
     void Start()
     {
         rend = GetComponent<Renderer>();
@@ -147,6 +155,13 @@ public class PlayerSpriteAnimator : MonoBehaviour
                         case 3: rend.material.SetTexture("_MainTex", correr3); break;
                     }
                 }
+
+                if (audioSource.clip != Fast_bell || !audioSource.isPlaying)
+                {
+                    audioSource.clip = Fast_bell;
+                    audioSource.Play();
+                    Debug.Log("Playing fast bell sound");
+                }
             }
             else
             {
@@ -162,11 +177,20 @@ public class PlayerSpriteAnimator : MonoBehaviour
                         case 3: rend.material.SetTexture("_MainTex", parado); break;
                     }
                 }
+                if (!audioSource.isPlaying || audioSource.clip != Bell)
+                {
+                    audioSource.clip = Bell;
+                    audioSource.Play();
+                    Debug.Log("Playing bell sound");
+                }
             }
         }
         // --- Idle ---
         else
         {
+            if (audioSource.isPlaying)
+                audioSource.Stop();
+
             rend.material.SetTexture("_MainTex", parado);
             timer = 0f;
             walkFrameIndex = 0;
