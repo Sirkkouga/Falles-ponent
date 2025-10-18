@@ -4,58 +4,141 @@ public class PlayerSpriteAnimator : MonoBehaviour
 {
     [Header("Idle / Walk Sprites")]
     public Texture parado;      // Idle texture
+    public Texture agachado;    // Crouch texture
     public Texture camina1;     // Walk frame 1
-    
     public Texture camina2;     // Walk frame 2
 
     [Header("Run Sprites")]
-    public Texture correr1;     // Run frame 1
-    public Texture correr2;     // Run frame 2
-    public Texture correr3;     // Run frame 3
-    public Texture correr4;     // Run frame 4
+    public Texture correr1;
+    public Texture correr2;
+    public Texture correr3;
+    public Texture correr4;
 
-    public float walkAnimationSpeed = 0.2f; // Seconds per frame
-    public float runAnimationSpeed = 0.1f;  // Faster animation for running
+    [Header("Jump Sprites")]
+    public Texture saltar1;
+    public Texture saltar2;
+    public Texture saltar3;
+    public Texture saltar4;
+
+    [Header("Animation Speeds")]
+    public float walkAnimationSpeed = 0.2f;
+    public float runAnimationSpeed = 0.1f;
+    public float jumpAnimationSpeed = 0.2f;
+
+    [Header("Jump Heights (visual only)")]
+    public float smallJumpOffset = 0.15f; // Height for saltar1 and saltar4
+    public float bigJumpOffset = 0.3f;    // Height for saltar2 and saltar3
 
     private Renderer rend;
     private float timer;
     private int walkFrameIndex = 0;
     private int runFrameIndex = 0;
+    private int jumpFrameIndex = 0;
+    private bool wasCtrlHeldLastFrame = false;
+
+    // Jump state
+    private bool isJumping = false;
+    private float jumpTimer = 0f;
+
+    // Remember base local position for Y offset reset
+    private Vector3 basePosition;
 
     void Start()
     {
         rend = GetComponent<Renderer>();
         rend.material.SetTexture("_MainTex", parado);
-        rend.material.mainTextureScale = new Vector2(1f, 1f); // default scale
-        rend.material.mainTextureOffset = Vector2.zero;       // default offset
+        rend.material.mainTextureScale = new Vector2(1f, 1f);
+        rend.material.mainTextureOffset = Vector2.zero;
+
+        basePosition = transform.localPosition;
     }
 
     void Update()
     {
         float horizontalInput = Input.GetAxisRaw("Horizontal");
         bool isShiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+        bool isCtrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 
-        // --- No movement: idle ---
-        if (horizontalInput == 0)
+        // --- Detect jump start ---
+        if (!isJumping && Input.GetKeyDown(KeyCode.Space))
         {
-            rend.material.SetTexture("_MainTex", parado);
+            isJumping = true;
+            jumpFrameIndex = 0;
+            jumpTimer = 0f;
+            rend.material.SetTexture("_MainTex", saltar1);
+            transform.localPosition = basePosition + Vector3.up * smallJumpOffset;
+        }
+
+        // --- Handle jump animation ---
+        if (isJumping)
+        {
+            jumpTimer += Time.deltaTime;
+
+            if (jumpTimer >= jumpAnimationSpeed)
+            {
+                jumpTimer = 0f;
+                jumpFrameIndex++;
+
+                switch (jumpFrameIndex)
+                {
+                    case 1:
+                        rend.material.SetTexture("_MainTex", saltar2);
+                        transform.localPosition = basePosition + Vector3.up * bigJumpOffset;
+                        break;
+                    case 2:
+                        rend.material.SetTexture("_MainTex", saltar3);
+                        transform.localPosition = basePosition + Vector3.up * bigJumpOffset;
+                        break;
+                    case 3:
+                        rend.material.SetTexture("_MainTex", saltar4);
+                        transform.localPosition = basePosition + Vector3.up * smallJumpOffset;
+                        break;
+                    default:
+                        // End of jump
+                        isJumping = false;
+                        jumpFrameIndex = 0;
+                        transform.localPosition = basePosition;
+                        break;
+                }
+            }
+
+            return; // Skip other animation logic during jump
+        }
+
+        // --- Detect when crouch is released ---
+        if (wasCtrlHeldLastFrame && !isCtrlHeld)
+        {
+            timer = 0f;
+            walkFrameIndex = 0;
+            runFrameIndex = 0;
+
+            if (horizontalInput == 0)
+                rend.material.SetTexture("_MainTex", parado);
+            else if (isShiftHeld)
+                rend.material.SetTexture("_MainTex", correr1);
+            else
+                rend.material.SetTexture("_MainTex", camina1);
+        }
+
+        // --- Crouch ---
+        if (isCtrlHeld)
+        {
+            rend.material.SetTexture("_MainTex", agachado);
             timer = 0f;
             walkFrameIndex = 0;
             runFrameIndex = 0;
         }
-        else
+        // --- Movement ---
+        else if (horizontalInput != 0)
         {
-            // --- Walking or Running Animation ---
             timer += Time.deltaTime;
 
             if (isShiftHeld)
             {
-                // Running
                 if (timer >= runAnimationSpeed)
                 {
                     timer = 0f;
-                    runFrameIndex = (runFrameIndex + 1) % 4; // 4 running frames
-
+                    runFrameIndex = (runFrameIndex + 1) % 4;
                     switch (runFrameIndex)
                     {
                         case 0: rend.material.SetTexture("_MainTex", correr1); break;
@@ -67,11 +150,10 @@ public class PlayerSpriteAnimator : MonoBehaviour
             }
             else
             {
-                // Walking
                 if (timer >= walkAnimationSpeed)
                 {
                     timer = 0f;
-                    walkFrameIndex = (walkFrameIndex + 1) % 4; // 4 walking frames
+                    walkFrameIndex = (walkFrameIndex + 1) % 4;
                     switch (walkFrameIndex)
                     {
                         case 0: rend.material.SetTexture("_MainTex", camina1); break;
@@ -82,8 +164,16 @@ public class PlayerSpriteAnimator : MonoBehaviour
                 }
             }
         }
+        // --- Idle ---
+        else
+        {
+            rend.material.SetTexture("_MainTex", parado);
+            timer = 0f;
+            walkFrameIndex = 0;
+            runFrameIndex = 0;
+        }
 
-        // --- Flip Texture Horizontally ---
+        // --- Flip horizontally ---
         Vector2 scale = rend.material.mainTextureScale;
         Vector2 offset = rend.material.mainTextureOffset;
 
@@ -95,10 +185,12 @@ public class PlayerSpriteAnimator : MonoBehaviour
         else
         {
             scale.x = -1f;
-            offset.x = 1f; // shift texture so it stays visible
+            offset.x = 1f;
         }
 
         rend.material.mainTextureScale = scale;
         rend.material.mainTextureOffset = offset;
+
+        wasCtrlHeldLastFrame = isCtrlHeld;
     }
 }
