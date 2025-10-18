@@ -9,9 +9,9 @@ public class MenuPrincipal : MonoBehaviour
         SceneManager.LoadScene("SampleScene"); // Nombre de tu escena de juego
     }
 
-    public void Salir()
+    public void Instruccions()
     {
-        Application.Quit();
-        Debug.Log("Saliendo del juego...");
+        SceneManager.LoadScene("InstruccionsScene"); // Nombre de tu escena de juego
+        Debug.Log("anar a la escena instruccions");
     }
 }
