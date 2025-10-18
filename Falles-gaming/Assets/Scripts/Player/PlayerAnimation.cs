@@ -49,7 +49,6 @@ public class PlayerSpriteAnimator : MonoBehaviour
     public AudioClip Bell;
     public AudioClip Fast_bell;
     public AudioSource audioSource;
-    public AudioSource audioSource2;
 
     void Start()
     {
